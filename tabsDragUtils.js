@@ -12,7 +12,7 @@
  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
  original:
-   http://github.com/piroor/fxaddonlibs/blob/master/tabsDragUtils.js
+   http://github.com/piroor/fxaddonlib-tabs-drag-utils
 */
 (function() {
 	const currentRevision = 25;
