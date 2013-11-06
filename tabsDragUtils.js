@@ -1,5 +1,5 @@
 /*
- Multiple Tabs Drag and Drop Utilities for Firefox 3.5 or later
+ Multiple Tabs Drag and Drop Utilities for Firefox 24 or later
 
  Usage:
    window['piro.sakura.ne.jp'].tabsDragUtils.initTabBrowser(gBrowser);
@@ -15,7 +15,7 @@
    http://github.com/piroor/fxaddonlib-tabs-drag-utils
 */
 (function() {
-	const currentRevision = 28;
+	const currentRevision = 29;
 
 	if (!('piro.sakura.ne.jp' in window)) window['piro.sakura.ne.jp'] = {};
 
@@ -32,7 +32,10 @@
 
 	const Cc = Components.classes;
 	const Ci = Components.interfaces;
+	const Cu = Components.utils;
 	const TAB_DROP_TYPE = 'application/x-moz-tabbrowser-tab';
+
+	Cu.import('resource:///modules/sessionstore/SessionStore.jsm');
 
 	var tabsDragUtils = {
 		revision : currentRevision,
@@ -59,18 +62,7 @@
 			return data;
 		},
 		get TabRestoreStates() {
-			return this.SessionStoreNS.TabRestoreStates;
-		},
-		get SessionStoreNS() {
-			delete this.SessionStoreNS;
-			try {
-				// resource://app/modules/sessionstore/SessionStore.jsm ?
-				this.SessionStoreNS = Components.utils.import('resource:///modules/sessionstore/SessionStore.jsm', {});
-			}
-			catch(e) {
-				this.SessionStoreNS = {};
-			}
-			return this.SessionStoreNS;
+			return SessionStore.TabRestoreStates;
 		},
 
 		init : function TDU_init()
