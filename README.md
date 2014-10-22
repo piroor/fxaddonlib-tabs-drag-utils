@@ -1,4 +1,4 @@
-# Multiple Tabs Drag and Drop Utilities for Firefox 24 or later
+# Multiple Tabs Drag and Drop Utilities for Firefox 31 or later
 
 ## Usage
 
