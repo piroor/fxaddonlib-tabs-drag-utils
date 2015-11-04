@@ -160,17 +160,17 @@
 			this.updatedTabDNDObservers.push(aObserver);
 
 			if (typeof aObserver._setEffectAllowedForDataTransfer === 'function') { // Firefox 43 and older
-			if (aObserver._setEffectAllowedForDataTransfer.toSource().indexOf('tabsDragUtils') < 0) {
-				let original = aObserver._setEffectAllowedForDataTransfer;
-				aObserver.__TabsDragUtils_original__setEffectAllowedForDataTransfer = original;
-				eval('aObserver._setEffectAllowedForDataTransfer = '+
-					original.toSource().replace(
-						'dt.mozItemCount > 1',
-						'$& && !window["piro.sakura.ne.jp"].tabsDragUtils.isTabsDragging(arguments[0])'
-					)
-				);
-				aObserver.__TabsDragUtils_updated__setEffectAllowedForDataTransfer = aObserver._setEffectAllowedForDataTransfer;
-			}
+				if (aObserver._setEffectAllowedForDataTransfer.toSource().indexOf('tabsDragUtils') < 0) {
+					let original = aObserver._setEffectAllowedForDataTransfer;
+					aObserver.__TabsDragUtils_original__setEffectAllowedForDataTransfer = original;
+					eval('aObserver._setEffectAllowedForDataTransfer = '+
+						original.toSource().replace(
+							'dt.mozItemCount > 1',
+							'$& && !window["piro.sakura.ne.jp"].tabsDragUtils.isTabsDragging(arguments[0])'
+						)
+					);
+					aObserver.__TabsDragUtils_updated__setEffectAllowedForDataTransfer = aObserver._setEffectAllowedForDataTransfer;
+				}
 			}
 			else { // Firefox 44 and later
 				if (typeof aObserver._getDropEffectForTabDrag === 'function' &&
