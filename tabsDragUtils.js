@@ -141,18 +141,18 @@
 		{
 			this.updatedTabDNDObservers.push(aObserver);
 
-				if (typeof aObserver._getDropEffectForTabDrag === 'function' &&
-					aObserver._getDropEffectForTabDrag.toSource().indexOf('tabsDragUtils') < 0) {
-					let original = aObserver._getDropEffectForTabDrag;
-					aObserver.__TabsDragUtils_original__getDropEffectForTabDrag = original;
-					eval('aObserver._getDropEffectForTabDrag = '+
-						original.toSource().replace(
-							'dt.mozItemCount > 1',
-							'$& && !window["piro.sakura.ne.jp"].tabsDragUtils.isTabsDragging(arguments[0])'
-						)
-					);
-					aObserver.__TabsDragUtils_updated__getDropEffectForTabDrag = aObserver._getDropEffectForTabDrag;
-				}
+			if (typeof aObserver._getDropEffectForTabDrag === 'function' &&
+				aObserver._getDropEffectForTabDrag.toSource().indexOf('tabsDragUtils') < 0) {
+				let original = aObserver._getDropEffectForTabDrag;
+				aObserver.__TabsDragUtils_original__getDropEffectForTabDrag = original;
+				eval('aObserver._getDropEffectForTabDrag = '+
+					original.toSource().replace(
+						'dt.mozItemCount > 1',
+						'$& && !window["piro.sakura.ne.jp"].tabsDragUtils.isTabsDragging(arguments[0])'
+					)
+				);
+				aObserver.__TabsDragUtils_updated__getDropEffectForTabDrag = aObserver._getDropEffectForTabDrag;
+			}
 
 			if ('_animateTabMove' in aObserver &&
 				aObserver._animateTabMove.toSource().indexOf('tabsDragUtils') < 0) {
