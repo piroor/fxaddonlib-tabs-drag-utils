@@ -325,8 +325,6 @@ TDUContext.utils.updateDropIndex(newIndex, TDUContext);
           // Shift background tabs to leave a gap where the dragged tab
           // would currently be dropped.
 
-tabWidth = TDUContext.tabsSize;
-
           for (let tab of tabs) {
             if (tab != draggedTab) {
               let shift = getTabShift(tab, newIndex);
@@ -337,9 +335,11 @@ tabWidth = TDUContext.tabsSize;
 
           function getTabShift(tab, dropIndex) {
             if (tab._tPos < draggedTab._tPos && tab._tPos >= dropIndex)
-              return rtl ? -tabWidth : tabWidth;
+              return rtl ? -TDUContext.tabsSize : TDUContext.tabsSize;
+//              return rtl ? -tabWidth : tabWidth;
             if (tab._tPos > draggedTab._tPos && tab._tPos < dropIndex)
-              return rtl ? tabWidth : -tabWidth;
+              return rtl ? TDUContext.tabsSize : -TDUContext.tabsSize;
+//              return rtl ? tabWidth : -tabWidth;
             return 0;
           }
 
