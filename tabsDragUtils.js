@@ -13,9 +13,6 @@
 
  original:
    http://github.com/piroor/fxaddonlib-tabs-drag-utils
-
- depends on:
-   https://github.com/clear-code/js-extended-immutable
 */
 (function() {
 	const currentRevision = 40;
@@ -36,9 +33,6 @@
 	const Cc = Components.classes;
 	const Ci = Components.interfaces;
 	const TAB_DROP_TYPE = 'application/x-moz-tabbrowser-tab';
-
-	// fix path to extended-immutable.js
-	var { ExtendedImmutable } = Components.utils.import('resource://my-modules/extended-immutable.js', {});
 
 	var tabsDragUtils = {
 		revision : currentRevision,
@@ -149,28 +143,51 @@
 
 			if (typeof aObserver._getDropEffectForTabDrag === 'function' &&
 				!aObserver.__tabsDragUtils__getDropEffectForTabDrag) {
-				aObserver.__tabsDragUtils__getDropEffectForTabDrag = aObserver._getDropEffectForTabDrag;
-				aObserver._getDropEffectForTabDrag = function(aEvent, ...aArgs) {
-					if (!window["piro.sakura.ne.jp"].tabsDragUtils.isTabsDragging(aEvent))
-						return aEvent;
+				aObserver.__tabsDragUtils_original__getDropEffectForTabDrag = aObserver._getDropEffectForTabDrag;
+				aObserver._getDropEffectForTabDrag = function(event) {
+/**
+ * Original:
+ *  base version: Nightly 51.0a1
+ *  date        : 2016-09-04
+ *  source      : https://dxr.mozilla.org/mozilla-central/rev/1789229965bfc5e7b08dfcf1c054c366abe1267a/browser/base/content/tabbrowser.xml#5545
+ */
+//=====================================================================
+          var dt = event.dataTransfer;
+          // Disallow dropping multiple items
+//          if (dt.mozItemCount > 1)
+          if (dt.mozItemCount > 1 && !window['piro.sakura.ne.jp'].tabsDragUtils.isTabsDragging(event))
+            return "none";
 
-					var fakeItemCount = 1;
-					var fakeDataTransfer = new ExtendedImmutable(aEvent.dataTransfer, {
-						get mozItemCount() {
-							if (fakeItemCount) {
-								fakeItemCount = null;
-								return fakeItemCount;
-							}
-							return aEvent.dataTransfer.mozItemCount;
-						}
-					});
-					var fakeEvent = new ExtendedImmutable(aEvent, {
-						get dataTransfer() {
-							return fakeDataTransfer;
-						}
-					});
-					return aObserver.__tabsDragUtils__getDropEffectForTabDrag(fakeEvent, ...aArgs);
+          var types = dt.mozTypesAt(0);
+          // tabs are always added as the first type
+          if (types[0] == TAB_DROP_TYPE) {
+            let sourceNode = dt.mozGetDataAt(TAB_DROP_TYPE, 0);
+            if (sourceNode instanceof XULElement &&
+                sourceNode.localName == "tab" &&
+                sourceNode.ownerDocument.defaultView instanceof ChromeWindow &&
+                sourceNode.ownerDocument.documentElement.getAttribute("windowtype") == "navigator:browser" &&
+                sourceNode.ownerDocument.defaultView.gBrowser.tabContainer == sourceNode.parentNode) {
+              // Do not allow transfering a private tab to a non-private window
+              // and vice versa.
+              if (PrivateBrowsingUtils.isWindowPrivate(window) !=
+                  PrivateBrowsingUtils.isWindowPrivate(sourceNode.ownerDocument.defaultView))
+                return "none";
+
+              if (window.gMultiProcessBrowser !=
+                  sourceNode.ownerDocument.defaultView.gMultiProcessBrowser)
+                return "none";
+
+              return dt.dropEffect == "copy" ? "copy" : "move";
+            }
+          }
+
+          if (browserDragAndDrop.canDropLink(event)) {
+            return "link";
+          }
+          return "none";
+//=====================================================================
 				};
+				aObserver.__TabsDragUtils_updated__getDropEffectForTabDrag = aObserver._getDropEffectForTabDrag;
 			}
 
 			if ('_animateTabMove' in aObserver &&
