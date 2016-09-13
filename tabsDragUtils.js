@@ -900,6 +900,7 @@ TDUContext.destroy();
 				case 'overflow':
 				case 'underflow':
 					if (aEvent.target.localName == 'tab') {
+						// this must be canceled to prevent the "+" button in the tab bar turns its mode.
 						aEvent.stopPropagation();
 					}
 					return;
