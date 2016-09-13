@@ -635,10 +635,10 @@ TDUContext.destroy();
 			aEvent.stopPropagation();
 
 			if (aOptions.shrinkOthers) {
-			document.addEventListener('dragend', this, true);
-			document.addEventListener('drop', this, true);
-			document.addEventListener('overflow', this, true);
-			document.addEventListener('underflow', this, true);
+				document.addEventListener('dragend', this, true);
+				document.addEventListener('drop', this, true);
+				document.addEventListener('overflow', this, true);
+				document.addEventListener('underflow', this, true);
 			}
 		},
 		isVertical : function TDS_isVertical(aElement)
