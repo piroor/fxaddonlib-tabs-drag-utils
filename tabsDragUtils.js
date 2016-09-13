@@ -452,8 +452,9 @@ TDUContext.destroy();
 						};
 						draggedTab.__tabsDragUtils__backupStyle = backup;
 					}
-					style.setProperty('max-'+context.rowSize, '3px', 'important');
-					style.setProperty('min-'+context.rowSize, '3px', 'important');
+					let size = draggedTab.boxObject[context.rowSize] * 0.1;
+					style.setProperty('max-'+context.rowSize, size + 'px', 'important');
+					style.setProperty('min-'+context.rowSize, size + 'px', 'important');
 					style.setProperty('overflow', 'hidden', 'important');
 				}
 				draggedTab._dragData.animLastScreenX = context.currentPositionCoordinate;
