@@ -195,9 +195,9 @@
 				aObserver._animateTabMove = function _animateTabMove(event, aOptions) {
 /**
  * Original:
- *  base version: Nightly 51.0a1
- *  date        : 2016-09-04
- *  source      : https://dxr.mozilla.org/mozilla-central/rev/1789229965bfc5e7b08dfcf1c054c366abe1267a/browser/base/content/tabbrowser.xml#5303
+ *  base version: Nightly 55.0a1
+ *  date        : 2017-05-08
+ *  source      : https://dxr.mozilla.org/mozilla-central/rev/17d8a1e278a9c54a6fdda9d390abce4077e55b20/browser/base/content/tabbrowser.xml#6171
  */
 //=====================================================================
 var TDUContext = window["piro.sakura.ne.jp"].tabsDragUtils.setupContext(event, aOptions);
@@ -221,7 +221,6 @@ TDUContext.utils.setupDraggedTabs(TDUContext);
           if (screenX == draggedTab._dragData.animLastScreenX)
             return;
 
-          let draggingRight = screenX > draggedTab._dragData.animLastScreenX;
           draggedTab._dragData.animLastScreenX = screenX;
 
 TDUContext.utils.updateDraggedTabs(TDUContext);
