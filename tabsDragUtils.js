@@ -885,7 +885,7 @@ TDUContext.destroy();
 		
 		_apply : function DOMDTProxy__apply(aMethod, aArguments) 
 		{
-			return this._source[aMethod].apply(this._source, aArguments);
+			return this._source[aMethod](...aArguments);
 		},
 	 
 		// nsIDOMDataTransfer 
@@ -895,11 +895,11 @@ TDUContext.destroy();
 		set effectAllowed(aValue) { return this._source.effectAllowed = aValue; },
 		get files() { return this._source.files; },
 		get types() { return this._source.types; },
-		clearData : function DOMDTProxy_clearData() { return this._apply('clearData', arguments); },
-		setData : function DOMDTProxy_setData() { return this._apply('setData', arguments); },
-		getData : function DOMDTProxy_getData() { return this._apply('getData', arguments); },
-		setDragImage : function DOMDTProxy_setDragImage() { return this._apply('setDragImage', arguments); },
-		addElement : function DOMDTProxy_addElement() { return this._apply('addElement', arguments); },
+		clearData : function DOMDTProxy_clearData(...aArgs) { return this._apply('clearData', aArgs); },
+		setData : function DOMDTProxy_setData(...aArgs) { return this._apply('setData', aArgs); },
+		getData : function DOMDTProxy_getData(...aArgs) { return this._apply('getData', aArgs); },
+		setDragImage : function DOMDTProxy_setDragImage(...aArgs) { return this._apply('setDragImage', aArgs); },
+		addElement : function DOMDTProxy_addElement(...aArgs) { return this._apply('addElement', aArgs); },
 	 
 		// nsIDOMNSDataTransfer 
 		get mozItemCount()
