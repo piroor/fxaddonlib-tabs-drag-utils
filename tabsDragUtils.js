@@ -881,6 +881,7 @@ TDUContext.destroy();
 	}
 
 	DOMDataTransferProxy.prototype = {
+		__tabsDragUtils__onlyFirstItem : false, // set this to true on demand
 		
 		_apply : function DOMDTProxy__apply(aMethod, aArguments) 
 		{
@@ -903,7 +904,7 @@ TDUContext.destroy();
 		// nsIDOMNSDataTransfer 
 		get mozItemCount()
 		{
-			return this._tabs.length;
+			return this.__tabsDragUtils__onlyFirstItem ? 1 : this._tabs.length;
 		},
 
 		get mozCursor() { return this._source.mozCursor; },
@@ -911,7 +912,7 @@ TDUContext.destroy();
 
 		mozTypesAt : function DOMDTProxy_mozTypesAt(aIndex)
 		{
-			if (aIndex >= this._tabs.length)
+			if (aIndex >= this.mozItemCount)
 				return new StringList([]);
 
 			// return this._apply('mozTypesAt', [0]);
@@ -933,7 +934,7 @@ TDUContext.destroy();
 
 		mozGetDataAt : function DOMDTProxy_mozGetDataAt(aFormat, aIndex)
 		{
-			if (aIndex >= this._tabs.length)
+			if (aIndex >= this.mozItemCount)
 				return null;
 
 			var tab = this._tabs[aIndex];
